@@ -1,11 +1,15 @@
 package br.com.projetoteatro.model;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.Year;
+
 public abstract class Pessoa {
     private String nome;
     private String email;
     private String telefone;
     private String cpf;
-    // em breve um atributo para ver idade, será com local date, vou estudar um pouquinho ainda.
+    private LocalDate datNacimento;
 
     public String getNome() {
         return nome;
@@ -39,6 +43,14 @@ public abstract class Pessoa {
         this.cpf = cpf;
     }
 
+    public LocalDate getDatNacimento() {
+        return datNacimento;
+    }
+
+    public void setDatNacimento(LocalDate datNacimento) {
+        this.datNacimento = datNacimento;
+    }
+
     public Pessoa() {
 
     }
@@ -50,12 +62,17 @@ public abstract class Pessoa {
         this.cpf = cpf;
     }
 
+    public boolean verficadorIdade() {
+        return Period.between(datNacimento, LocalDate.now()).getYears() >= 18;
+    }
+
     @Override
     public String toString() {
         return "Nome: " + getNome() + System.lineSeparator() +
                 "E-mail: " + getEmail() + System.lineSeparator() +
                 "Telefone: " + getTelefone() + System.lineSeparator() +
-                "CPF: " + getCpf();
+                "CPF: " + getCpf() + System.lineSeparator() +
+                "Maior idade: " + verficadorIdade();
 
     }
 }
