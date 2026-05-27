@@ -1,4 +1,4 @@
-package br.com.projetoteatro.service;
+package br.com.projetoteatro.service.validators;
 
 public class ValidadorCPF {
 
