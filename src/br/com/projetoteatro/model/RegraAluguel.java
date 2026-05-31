@@ -63,7 +63,17 @@ public class RegraAluguel {
     public void setValorHora(float valorHora) {
         this.valorHora = valorHora;
     }
-    //implementar função com as regras
+
+    public LocalTime getHorarioFim() {
+        return horarioFim;
+    }
+
+    public LocalTime getHorarioComeco() {
+        return horarioComeco;
+    }
+
+
+
 
 
 
