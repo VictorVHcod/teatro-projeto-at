@@ -1,6 +1,8 @@
 package br.com.projetoteatro.service.validators;
 
+import br.com.projetoteatro.enums.StatusProposta;
 import br.com.projetoteatro.exceptions.*;
+import br.com.projetoteatro.model.Administrador;
 import br.com.projetoteatro.model.Contratante;
 import br.com.projetoteatro.model.PropostaAluguel;
 import br.com.projetoteatro.model.RegraAluguel;
@@ -12,6 +14,7 @@ public class ServicoTeatro {
     private ArrayList<PropostaAluguel> listaPropostas;
     private ArrayList<Contratante> listaContratante;
     private ValidadorHorarios validador;
+    //private Administrador[] adm;
 
 
     public ServicoTeatro(){
@@ -20,6 +23,7 @@ public class ServicoTeatro {
         listaPropostas=new ArrayList<>();
         listaContratante=new ArrayList<>();
         validador=new ValidadorHorarios();
+        //adm=new Administrador[1];
 
     }
     //listar Regras obs: acho que tem que sobrescrever tostring
@@ -61,6 +65,11 @@ public class ServicoTeatro {
         validador.validarConflitoHorario(p,listaPropostas);
         listaPropostas.add(p);
     }
+    //gerar proposta pdf
+    public void geradorProposta(long id){
+        PropostaAluguel proposta=buscarProposta(id);
+        //GeradorDePDF.gerarContrato(proposta);
+    }
     //buscar proposta por id
     public PropostaAluguel buscarProposta(long id) throws PropostaInvalidaException {
         for(PropostaAluguel p: listaPropostas){
@@ -74,6 +83,10 @@ public class ServicoTeatro {
     //lista Proposta
     public ArrayList<PropostaAluguel> getListaPropostas() {
         return listaPropostas;
+    }
+    public void contratarProposta(long id) throws PropostaInvalidaException{
+        PropostaAluguel proposta=buscarProposta(id);
+        proposta.setStatusProposta(StatusProposta.CONTRATADO);
     }
 
     //cadastrar contratante
@@ -103,4 +116,35 @@ public class ServicoTeatro {
     public ArrayList<Contratante> getListaContratante() {
         return listaContratante;
     }
+    //filtragem
+
+    public ArrayList<PropostaAluguel> filtrarPropostaPorStatus(StatusProposta s)  {
+        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
+        for(PropostaAluguel x:listaPropostas){
+            if(x.getStatusProposta()==s){
+                listagemResultado.add(x);
+            }
+        }
+        return listagemResultado;
+    }
+    public ArrayList<PropostaAluguel> filtrarPropostaPorContratante(String n){
+        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
+        for(PropostaAluguel x:listaPropostas){
+            if(x.getContratante().getNome().toLowerCase().contains(n)){
+                listagemResultado.add(x);
+            }
+        }
+        return listagemResultado;
+    }
+    public ArrayList<PropostaAluguel> filtrarPropostaPorNomePeca(String n){
+        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
+        for(PropostaAluguel x:listaPropostas){
+            if(x.getNomePeca().toLowerCase().contains(n)){
+                listagemResultado.add(x);
+            }
+        }
+        return listagemResultado;
+    }
+
+
 }

@@ -118,4 +118,6 @@ public class PropostaAluguel {
     public String toString() {
         return "PropostaAluguel{" +"id=" + id +", contratante=" + contratante.getNome() +", nomePeca='" + nomePeca + '\'' + ", status=" + statusProposta +'}';
     }
+
+
 }
