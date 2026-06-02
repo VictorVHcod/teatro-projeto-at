@@ -2,7 +2,6 @@ package br.com.projetoteatro.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.Year;
 
 public abstract class Pessoa {
     private String nome;
@@ -53,6 +52,15 @@ public abstract class Pessoa {
 
     public Pessoa() {
 
+    }
+
+    public Pessoa(String email) {
+        this.email = email;
+    }
+
+    public Pessoa(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
     }
 
     public Pessoa(String nome, String email, String telefone, String cpf) {

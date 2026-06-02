@@ -11,7 +11,7 @@ public class Sessao {
     private LocalTime horarioFim;
     private Turno turno;
     private Peca peca;
-    private List<Ingresso> ingressos;
+    //private List<Ingresso> ingressos;
 
     public boolean conflitaCom(Sessao outra){
             if (!this.data.equals(outra.data)) {
@@ -23,6 +23,6 @@ public class Sessao {
     }
 
     public boolean estaDentroDoTurno(){
-
+        return false;
     }
 }

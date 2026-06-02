@@ -6,11 +6,11 @@ import java.util.List;
 public class Peca {
     private long id;
     private String nome;
-    private Artista artistaResponsavel;
+    //private Artista artistaResponsavel;
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private double precoIngresso;
-    private StatusContrato status;
+    //private StatusContrato status;
     private List<Sessao> sessoes;
     private double valorAluguel;
 
@@ -19,19 +19,19 @@ public class Peca {
     }
 
     public boolean estaEncerrada(){
-
+        return false;
     }
 
     public void encerrarContrato(){
 
     }
 
-    public void estenderContrato(LocalDate novaData {
+    public void estenderContrato(LocalDate novaData) {
 
     }
 
     public double calcularArrecadacao(){
-
+        return 0;
     }
 
 }
