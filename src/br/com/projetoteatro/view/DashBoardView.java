@@ -11,5 +11,13 @@ public class DashBoardView extends JFrame {
         setLocationRelativeTo(null);
 
         setLayout(null);
+
+        JLabel lblAdm = new JLabel("Adminitrativo: ");
+        lblAdm.setBounds(80,150,100,100);
+        add(lblAdm);
+
+        JButton btnAdm = new JButton();
+        btnAdm.setBounds(80,110,100,100);
+        add(btnAdm);
     }
 }

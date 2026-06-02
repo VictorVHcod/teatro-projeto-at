@@ -3,12 +3,21 @@ package br.com.projetoteatro.view;
 import br.com.projetoteatro.repository.AdministradorRepository;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class LoginView extends JFrame {
     AdministradorRepository adm = new AdministradorRepository();
+    private static final String CAMINHO = "C:\\Users\\windows\\OneDrive\\Área de Trabalho\\projeto-teatro\\usuario.txt";
+    private JTextField txtUser;
+    private JTextField txtSenha;
+    private JCheckBox lembrarSenha;
 
     public LoginView() throws SQLException {
+
         setTitle("Gerenciamento Teatro");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,10 +49,45 @@ public class LoginView extends JFrame {
         btnLogin.setBounds(150,200,70,30);
         add(btnLogin);
 
+        JCheckBox lembrarSenha = new JCheckBox("Lembrar usuário");
+        lembrarSenha.setBounds(80,170,90,20);
+        add(lembrarSenha);
+
+        System.out.println(new File(CAMINHO).getAbsolutePath());
+
+        try {
+            File file = new File(CAMINHO);
+
+            if (file.exists()) {
+                Scanner sc = new Scanner(file);
+                String emailSalvo = sc.nextLine();
+
+                txtUser.setText(emailSalvo);
+                lembrarSenha.setSelected(true);
+
+                sc.close();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         btnLogin.addActionListener(e -> {
             try {
                 String usuario = txtUser.getText();
                 String senha = txtSenha.getText();
+
+                if (lembrarSenha.isSelected()) {
+                    FileWriter writer = new FileWriter(CAMINHO);
+                    writer.write(usuario);
+                    writer.close();
+                    System.out.println("SALVOU USUÁRIO NO ARQUIVO");
+                } else {
+                    File file = new File(CAMINHO);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                }
 
                 if(adm.buscaLogin(usuario,senha)) {
                     new DashBoardView().setVisible(true);
@@ -52,6 +96,8 @@ public class LoginView extends JFrame {
                     JOptionPane.showMessageDialog(this,"Login inválido");
                 }
             } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
