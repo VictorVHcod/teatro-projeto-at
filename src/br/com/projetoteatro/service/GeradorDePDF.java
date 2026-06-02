@@ -46,4 +46,7 @@ public class GeradorDePDF {
         }
 
     }
+    public static void gerarIngresso(){
+        //Bryan adicionar ......o pdf do ingresso, eu acho
+    }
 }
