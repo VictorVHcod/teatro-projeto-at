@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class LoginView extends JFrame {
     AdministradorRepository adm = new AdministradorRepository();
-    private static final String CAMINHO = "C:\\Users\\windows\\OneDrive\\Área de Trabalho\\projeto-teatro\\usuario.txt";
+    private static final String CAMINHO = "usuario.txt";
     private JTextField txtUser;
     private JTextField txtSenha;
     private JCheckBox lembrarSenha;
@@ -81,7 +81,6 @@ public class LoginView extends JFrame {
                     FileWriter writer = new FileWriter(CAMINHO);
                     writer.write(usuario);
                     writer.close();
-                    System.out.println("SALVOU USUÁRIO NO ARQUIVO");
                 } else {
                     File file = new File(CAMINHO);
                     if (file.exists()) {
