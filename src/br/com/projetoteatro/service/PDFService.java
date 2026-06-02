@@ -11,7 +11,7 @@ import com.itextpdf.text.PageSize;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class GeradorDePDF {
+public class PDFService {
 
     public static void gerarContrato(PropostaAluguel proposta){
         Document doc = new Document(PageSize.A4,50,50,50,50);
