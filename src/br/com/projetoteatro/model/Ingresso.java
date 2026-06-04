@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Ingresso {
     private long id;
-    private Cliente cliente;
+    //private Cliente cliente;
     private Sessao sessao;
     private Assento assento;
     private Setor setor;
