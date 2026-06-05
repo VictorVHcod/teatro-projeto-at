@@ -100,6 +100,9 @@ public class PropostaAluguel {
     public LocalDate getDataFim() {
         return dataFim;
     }
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
+    }
     public LocalTime getHorarioInicio() {
         return horarioInicio;
     }
@@ -112,7 +115,9 @@ public class PropostaAluguel {
     public LocalDate getDataEncerramento() {
         return dataEncerramento;
     }
-
+    public void setStatusProposta(StatusProposta statusProposta) {
+        this.statusProposta = statusProposta;
+    }
 
     public void setValorIngresso(double valorIngresso) {
         this.valorIngresso = valorIngresso;

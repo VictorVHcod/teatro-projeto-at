@@ -3,6 +3,7 @@ package br.com.projetoteatro.service;
 import br.com.projetoteatro.exceptions.LoginInvalidoException;
 import br.com.projetoteatro.exceptions.SenhaInvalidaException;
 import br.com.projetoteatro.model.Administrador;
+import br.com.projetoteatro.model.Contratante;
 import br.com.projetoteatro.model.Pessoa;
 import br.com.projetoteatro.model.Usuario;
 
@@ -10,6 +11,17 @@ import java.util.ArrayList;
 
 public class LoginService {
 
+    public Contratante autenticarArtista(String email, String senha, ArrayList<Contratante> listaArtistas) throws LoginInvalidoException {
+        for(Contratante pessoa: listaArtistas){
+            if(pessoa.getEmail().equals(email)){
+                if(pessoa.getSenha().equals(senha)){
+                    return pessoa;
+                }
+                throw new LoginInvalidoException("Senha inválido!");
+            }
+        }
+        throw new LoginInvalidoException("Usuario não encontrado!");
+    }
         public Usuario autenticarUsuario(String email, String senha, ArrayList<Usuario> listaUsuarios) throws LoginInvalidoException {
             for(Usuario pessoa: listaUsuarios){
                 if(pessoa.getEmail().equals(email)){

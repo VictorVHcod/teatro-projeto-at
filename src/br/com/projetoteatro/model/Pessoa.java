@@ -82,17 +82,17 @@ public abstract class Pessoa {
 
     }
 
-    public boolean verficadorIdade() {
-        return Period.between(dataNascimento, LocalDate.now()).getYears() >= 18;
-    }
+    //public boolean verficadorIdade() {
+     //   return Period.between(dataNascimento, LocalDate.now()).getYears() >= 18;
+  //  }
 
     @Override
     public String toString() {
         return "Nome: " + getNome() + System.lineSeparator() +
                 "E-mail: " + getEmail() + System.lineSeparator() +
                 "Telefone: " + getTelefone() + System.lineSeparator() +
-                "CPF: " + getCpf() + System.lineSeparator() +
-                "Maior idade: " + verficadorIdade();
+                "CPF: " + getCpf() + System.lineSeparator();
+                //"Maior idade: " + verficadorIdade();
 
     }
 }

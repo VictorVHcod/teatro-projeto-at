@@ -25,6 +25,11 @@ public class Usuario extends Pessoa{
         this.id=System.currentTimeMillis();
         this.senha = senha;
     }
+    public Usuario(String nome,String email,String telefone,String cpf,String senha) {
+        super( nome,email,telefone,cpf);
+        this.id=System.currentTimeMillis();
+        this.senha = senha;
+    }
 
     public String getSenha() {
         return senha;
