@@ -1,52 +1,111 @@
 package br.com.projetoteatro.service;
 
 import br.com.projetoteatro.model.PropostaAluguel;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.PageSize;
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class PDFService {
+public class PdfService {
 
-    public static void gerarContrato(PropostaAluguel proposta){
-        Document doc = new Document(PageSize.A4,50,50,50,50);
+    public String gerarContrato(PropostaAluguel proposta) {
+        String nomeArquivo =
+                "contrato_" + proposta.getId() + ".pdf";
 
-        try{
-            PdfWriter.getInstance(doc,new FileOutputStream("Proposta_"+ proposta.getId()+ ".pdf"));
-            doc.open();
-            Font f=new Font(Font.FontFamily.TIMES_ROMAN,12);
-            Font t=new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD);
-            Paragraph titulo=new Paragraph("PROPOSTA DE ALUGUEL",t);
-            titulo.setAlignment(1);
-            doc.add(titulo);
-            doc.add(new Paragraph("ID: "+proposta.getId(),f));
-            doc.add(new Paragraph("Nome Contratante: "+proposta.getContratante().getNome(),f));
-            doc.add(new Paragraph("CPF Contratante: "+proposta.getContratante().getCpf(),f));
-            doc.add(new Paragraph("Nome Peça: "+proposta.getNomePeca(),f));
-            doc.add(new Paragraph("Data início: "+proposta.getDataInicio(),f));
-            doc.add(new Paragraph("Data fim: "+proposta.getDataFim(),f));
-            doc.add(new Paragraph("Horário: "+proposta.getHorarioInicio()+" até ás "+proposta.getHorarioFim(),f));
-            doc.add(new Paragraph("Valor do ingresso: R$ "+proposta.getValorIngresso(),f));
-            doc.add(new Paragraph("Valor do contrato: R$ "+proposta.getValorAluguel(),f));
-            doc.add(new Paragraph("_________________\nAssinatura Contratante",t));
+        try {
 
-            doc.close();
+            Document documento = new Document();
 
+            PdfWriter.getInstance(
+                    documento,
+                    new FileOutputStream(nomeArquivo)
+            );
+            documento.open();
 
+            Font titulo = FontFactory.getFont(
+                    FontFactory.HELVETICA_BOLD,
+                    18
+            );
 
+            Font texto = FontFactory.getFont(
+                    FontFactory.HELVETICA,
+                    12
+            );
 
-        } catch (FileNotFoundException | DocumentException e) {
+            Paragraph cabecalho =
+                    new Paragraph(
+                            "CONTRATO DE ALUGUEL DO TEATRO",
+                            titulo
+                    );
 
-            e.printStackTrace();
+            cabecalho.setAlignment(Element.ALIGN_CENTER);
+            documento.add(cabecalho);
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(
+                    "ID da proposta: "
+                            + proposta.getId(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(
+                    "Contratante: "
+                            + proposta.getContratante().getNome(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(
+                    "Peça: "
+                            + proposta.getNomePeca(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(
+                    "Período: "
+                            + proposta.getDataInicio()
+                            + " até "
+                            + proposta.getDataFim(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(
+                    "Horário: "
+                            + proposta.getHorarioInicio()
+                            + " às "
+                            + proposta.getHorarioFim(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(
+                    "Valor do aluguel: R$ "
+                            + proposta.getValorAluguel(),
+                    texto
+            ));
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(
+                    "As partes concordam com os termos estabelecidos neste contrato."
+            ));
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(
+                    "_________________________________"
+            ));
+
+            documento.add(new Paragraph(
+                    "Assinatura do Contratante"
+            ));
+
+            documento.close();
+
+            return nomeArquivo;
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Erro ao gerar PDF.", e
+            );
         }
-
-    }
-    public static void gerarIngresso(){
-        //Bryan adicionar ......o pdf do ingresso, eu acho
     }
 }
