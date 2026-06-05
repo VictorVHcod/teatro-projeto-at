@@ -6,118 +6,129 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class PropostaAluguel {
+
     private long id;
     private Contratante contratante;
     private String nomePeca;
-    private float valorIngresso;
-    private float valorAluguel;
+    private double valorIngresso;
+    private double valorAluguel;
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private LocalTime horarioInicio;
     private LocalTime horarioFim;
     private StatusProposta statusProposta;
+    private LocalDate dataEncerramento;
 
-    public PropostaAluguel( Contratante contratante, String nomePeca, float valorAluguel,
-                           LocalDate dataInicio, LocalDate dataFim, LocalTime horarioInicio,LocalTime horarioFim,float valorIngresso) {
-        this.id =System.currentTimeMillis();
+    public PropostaAluguel(
+            Contratante contratante,
+            String nomePeca,
+            double valorAluguel,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            LocalTime horarioInicio,
+            LocalTime horarioFim,
+            double valorIngresso) {
+
+        this.id = System.currentTimeMillis();
         this.contratante = contratante;
         this.nomePeca = nomePeca;
         this.valorAluguel = valorAluguel;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.statusProposta = StatusProposta.EM_CONTRATACAO;
         this.horarioInicio = horarioInicio;
         this.horarioFim = horarioFim;
         this.valorIngresso = valorIngresso;
+
+        this.statusProposta = StatusProposta.EM_CONTRATACAO;
     }
-    //getters and setters
+
+    public boolean estaEncerrada() {
+        return statusProposta == StatusProposta.ENCERRADO;
+    }
+
+    public void contratar() {
+        if (statusProposta != StatusProposta.EM_CONTRATACAO) {
+            throw new IllegalStateException(
+                    "A proposta não pode ser contratada."
+            );
+        }
+
+        statusProposta = StatusProposta.CONTRATADO;
+    }
+
+    public void encerrarContrato() {
+        if (estaEncerrada()) {
+            throw new IllegalStateException(
+                    "Contrato já encerrado."
+            );
+        }
+
+        statusProposta = StatusProposta.ENCERRADO;
+        dataEncerramento = LocalDate.now();
+    }
+
+    public void estenderContrato(LocalDate novaDataFim) {
+        if (!novaDataFim.isAfter(dataFim)) {
+            throw new IllegalArgumentException(
+                    "A nova data deve ser posterior à data atual."
+            );
+        }
+
+        dataFim = novaDataFim;
+        statusProposta = StatusProposta.ALTERADO;
+    }
+
+
     public long getId() {
         return id;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public Contratante getContratante() {
         return contratante;
     }
-
-    public void setContratante(Contratante contratante) {
-        this.contratante = contratante;
-    }
-
     public String getNomePeca() {
         return nomePeca;
     }
-
-    public void setNomePeca(String nomePeca) {
-        this.nomePeca = nomePeca;
+    public double getValorIngresso() {
+        return valorIngresso;
     }
-
-    public float getValorAluguel() {
+    public double getValorAluguel() {
         return valorAluguel;
     }
-
-    //getters setter
-
-
-    public StatusProposta getStatusProposta() {
-        return statusProposta;
-    }
-
-    public void setStatusProposta(StatusProposta statusProposta) {
-        this.statusProposta = statusProposta;
-    }
-
-    public LocalTime getHorarioFim() {
-        return horarioFim;
-    }
-
-    public void setHorarioFim(LocalTime horarioFim) {
-        this.horarioFim = horarioFim;
-    }
-
-    public LocalTime getHorarioInicio() {
-        return horarioInicio;
-    }
-
-    public void setHorarioInicio(LocalTime horarioInicio) {
-        this.horarioInicio = horarioInicio;
-    }
-
-    public LocalDate getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(LocalDate dataFim) {
-        this.dataFim = dataFim;
-    }
-
     public LocalDate getDataInicio() {
         return dataInicio;
     }
-
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
+    public LocalDate getDataFim() {
+        return dataFim;
+    }
+    public LocalTime getHorarioInicio() {
+        return horarioInicio;
+    }
+    public LocalTime getHorarioFim() {
+        return horarioFim;
+    }
+    public StatusProposta getStatusProposta() {
+        return statusProposta;
+    }
+    public LocalDate getDataEncerramento() {
+        return dataEncerramento;
     }
 
-    public void setValorAluguel(float valorAluguel) {
+
+    public void setValorIngresso(double valorIngresso) {
+        this.valorIngresso = valorIngresso;
+    }
+    public void setValorAluguel(double valorAluguel) {
         this.valorAluguel = valorAluguel;
     }
 
-    public float getValorIngresso() {
-        return valorIngresso;
-    }
 
-    public void setValorIngresso(float valorIngresso) {
-        this.valorIngresso = valorIngresso;
-    }
-
-
+    @Override
     public String toString() {
-        return "PropostaAluguel{" +"id=" + id +", contratante=" + contratante.getNome() +", nomePeca='" + nomePeca + '\'' + ", status=" + statusProposta +'}';
+        return "PropostaAluguel{" +
+                "id=" + id +
+                ", contratante=" + contratante.getNome() +
+                ", nomePeca='" + nomePeca + '\'' +
+                ", status=" + statusProposta +
+                '}';
     }
-
-
 }
