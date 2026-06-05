@@ -27,7 +27,7 @@ public class Main {
         LoginService login=new LoginService();
         String opcao = "";
 
-        while (!opcao.equalsIgnoreCase("s")){
+        do {
             System.out.println("1-Cadastrar adm");
             System.out.println("2-Fazer Login");
             System.out.println("3-Solicitar mudança senha");
@@ -47,19 +47,19 @@ public class Main {
             switch (opcao){
                 case "1"://cadastrando adm
                     System.out.println("Digite seu nome: ");
-                    String nome= input.nextLine();
+                    String nomeAdm= input.nextLine();
                     System.out.println("Digite seu email: ");
-                    String email= input.nextLine();
+                    String emailAdm= input.nextLine();
                     System.out.println("Digite seu telefone: ");
-                    String telefone= input.nextLine();
+                    String telefoneAdm= input.nextLine();
                     System.out.println("Digite seu cpf: ");
-                    String cpf= input.nextLine();
+                    String cpfAdm= input.nextLine();
                     System.out.println("Digite sua senha: ");
-                    String senha= input.nextLine();
+                    String senhaAdm= input.nextLine();
                     try{
                         central.getAdm();
                     }catch (AdiministradorInvalidoException e){
-                        Administrador adm=new Administrador(nome,email,telefone,cpf,senha);
+                        Administrador adm=new Administrador(nomeAdm,emailAdm,telefoneAdm,cpfAdm,senhaAdm);
                         central.cadastrarAdministrador(adm);
                         persistencia.salvarCentral(central,ARQUIVO_CENTRAL);
                     }
@@ -69,9 +69,9 @@ public class Main {
                 case "2"://fazendo login
 
                     System.out.print("Email: ");
-                    email = input.nextLine();
+                    String email = input.nextLine();
                     System.out.print("Senha: ");
-                    senha = input.nextLine();
+                    String senha = input.nextLine();
 
                     try {
 
@@ -93,7 +93,7 @@ public class Main {
                         central.solicitarMudancaSenhaAdm(cpfprocurado);
 
                         System.out.print("CPF: ");
-                        cpf = input.nextLine();
+                        String cpf = input.nextLine();
                         System.out.print("Código recebido: ");
                         String codigo = input.nextLine();
                         System.out.print("Nova senha: ");
@@ -255,7 +255,7 @@ public class Main {
 
             }
 
-        }while("s".equalsIgnoreCase(opcao));
+        }while(!"s".equalsIgnoreCase(opcao));
 
     }
 }
