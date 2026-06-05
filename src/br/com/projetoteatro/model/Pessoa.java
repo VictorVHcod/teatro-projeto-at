@@ -1,5 +1,7 @@
 package br.com.projetoteatro.model;
 
+import br.com.projetoteatro.enums.Genero;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -8,7 +10,8 @@ public abstract class Pessoa {
     private String email;
     private String telefone;
     private String cpf;
-    private LocalDate datNacimento;
+    private LocalDate dataNascimento;
+    private Genero sexo;
 
     public String getNome() {
         return nome;
@@ -42,12 +45,12 @@ public abstract class Pessoa {
         this.cpf = cpf;
     }
 
-    public LocalDate getDatNacimento() {
-        return datNacimento;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setDatNacimento(LocalDate datNacimento) {
-        this.datNacimento = datNacimento;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public Pessoa() {
@@ -69,9 +72,18 @@ public abstract class Pessoa {
         this.telefone = telefone;
         this.cpf = cpf;
     }
+    public Pessoa(String nome, String cpf, String email, Genero sexo, LocalDate dataNascimento, String telefone) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
+        this.sexo= sexo;
+        this.dataNascimento=dataNascimento;
+
+    }
 
     public boolean verficadorIdade() {
-        return Period.between(datNacimento, LocalDate.now()).getYears() >= 18;
+        return Period.between(dataNascimento, LocalDate.now()).getYears() >= 18;
     }
 
     @Override
