@@ -3,6 +3,7 @@ package br.com.projetoteatro.repository;
 import br.com.projetoteatro.service.ServicoTeatro;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import java.io.*;
 
