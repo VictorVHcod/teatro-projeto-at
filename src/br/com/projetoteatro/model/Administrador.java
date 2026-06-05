@@ -2,7 +2,9 @@ package br.com.projetoteatro.model;
 
 public class Administrador extends Pessoa {
     private String senha;
+    public Administrador() {
 
+    }
     public Administrador(String email, String senha) {
         super(email);
         this.senha = senha;

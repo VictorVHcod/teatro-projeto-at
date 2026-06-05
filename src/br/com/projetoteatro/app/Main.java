@@ -3,15 +3,17 @@ package br.com.projetoteatro.app;
 import br.com.projetoteatro.exceptions.AdiministradorInvalidoException;
 import br.com.projetoteatro.exceptions.ContratanteInvalidoException;
 import br.com.projetoteatro.exceptions.SenhaInvalidaException;
-import br.com.projetoteatro.model.Administrador;
-import br.com.projetoteatro.model.Contratante;
-import br.com.projetoteatro.model.Usuario;
+import br.com.projetoteatro.model.*;
+import br.com.projetoteatro.service.EmailService;
 import br.com.projetoteatro.service.LoginService;
 import br.com.projetoteatro.service.ServicoTeatro;
 import br.com.projetoteatro.service.ServicoTeatro;
 import br.com.projetoteatro.repository.Persistencia;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
         central = persistencia.recuperarCentral(ARQUIVO_CENTRAL);
 
         Scanner input = new Scanner(System.in);
-        LoginService login=new LoginService();
+
         String opcao = "";
 
         do {
@@ -41,8 +43,13 @@ public class Main {
             System.out.println("11-Solicitar mudança senha Cliente");
             System.out.println("12-Mostrar lista de  Cliente");
             System.out.println("13-Excluir artista da Cliente");
+            System.out.println("14-Cadastrar Proposta de Aluguel");
+            System.out.println("15-Listar Propostas");
+            System.out.println("16-Detalhar/Promover Proposta");
+            System.out.println("17-Enviar Proposta por Email");
             System.out.println("S-Sair");
             opcao=input.nextLine();
+            LoginService login=central.getLoginService();
 
             switch (opcao){
                 case "1"://cadastrando adm
@@ -57,10 +64,10 @@ public class Main {
                     System.out.println("Digite sua senha: ");
                     String senhaAdm= input.nextLine();
                     try{
-                        central.getAdm();
+                        central.getAdministradorService().getAdm();
                     }catch (AdiministradorInvalidoException e){
                         Administrador adm=new Administrador(nomeAdm,emailAdm,telefoneAdm,cpfAdm,senhaAdm);
-                        central.cadastrarAdministrador(adm);
+                        central.getAdministradorService().cadastrarAdministrador(adm);
                         persistencia.salvarCentral(central,ARQUIVO_CENTRAL);
                     }
                     //cadastrar artista e cliente
@@ -75,8 +82,13 @@ public class Main {
 
                     try {
 
-                        Administrador admLogado = login.autenticarAdm(email, senha, central.getAdm());
-                        System.out.println("Bem-vindo " + central.getAdm().getNome());
+                        Pessoa pessoa = login.autenticar(email, senha);
+                        if(pessoa instanceof Administrador){
+                            Administrador admLogado = (Administrador) pessoa;
+                            System.out.println("Bem-vindo " + admLogado.getNome());
+                        }else{
+                            System.out.println("Esse usuário não é administrador.");
+                        }
                         //entrei na tela adm...
 
                     } catch (AdiministradorInvalidoException e) {
@@ -90,7 +102,7 @@ public class Main {
                     try{
                         System.out.print("Confirme seu cpf para alterar senha: ");
                         String cpfprocurado = input.nextLine();
-                        central.solicitarMudancaSenhaAdm(cpfprocurado);
+                        central.getLoginService().solicitarMudancaSenha(cpfprocurado);
 
                         System.out.print("CPF: ");
                         String cpf = input.nextLine();
@@ -99,7 +111,7 @@ public class Main {
                         System.out.print("Nova senha: ");
                         String novaSenha = input.nextLine();
 
-                        central.redefinirSenhaAdm(cpf, codigo, novaSenha);
+                        central.getLoginService().redefinirSenha(cpf, codigo, novaSenha);
                         persistencia.salvarCentral(central, ARQUIVO_CENTRAL);
                     }catch (Exception e) {
                         e.printStackTrace();
@@ -118,7 +130,7 @@ public class Main {
                     String senhaArtista= input.nextLine();
                     try{
                         Contratante contratante =new Contratante(nomeArtista,emailArtista,telefoneArtista,cpfArtista,senhaArtista);
-                        central.cadastrarContratante(contratante);
+                        central.getArtistaService().cadastrarContratante(contratante);
                         persistencia.salvarCentral(central,ARQUIVO_CENTRAL);
                     }catch (Exception e){
                         e.printStackTrace();
@@ -131,7 +143,7 @@ public class Main {
                     senhaArtista = input.nextLine();
 
                     try{
-                        Contratante artista=login.autenticarArtista(emailArtista,senhaArtista,central.getListaContratante());
+                        Contratante artista=(Contratante)login.autenticar(emailArtista,senhaArtista);
                         System.out.println("Bem-vindo " + artista.getNome());
                     }catch (Exception e) {
                         e.printStackTrace();}
@@ -141,7 +153,7 @@ public class Main {
                     try{
                         System.out.print("Confirme seu cpf para alterar senha: ");
                         String cpfArtistaprocurado = input.nextLine();
-                        central.solicitarMudancaSenhaContratante(cpfArtistaprocurado);
+                        central.getLoginService().solicitarMudancaSenha(cpfArtistaprocurado);
 
 
                         System.out.print("Código recebido: ");
@@ -149,7 +161,7 @@ public class Main {
                         System.out.print("Nova senha: ");
                         String novaSenha = input.nextLine();
 
-                        central.redefinirSenhaContratante(cpfArtistaprocurado,codigo,novaSenha);
+                        central.getLoginService().redefinirSenha(cpfArtistaprocurado,codigo,novaSenha);
                         persistencia.salvarCentral(central, ARQUIVO_CENTRAL);
                     }catch (Exception e) {
                         e.printStackTrace();
@@ -158,17 +170,17 @@ public class Main {
                     break;
                 case "7"://listar artista
 
-                    for(Contratante c : central.getListaContratante()){
+                    for(Contratante c : central.getArtistaService().getListaContratante()){
                         System.out.println(c);
                     }
 
                     break;
                 case "8":
 
-                    System.out.print("CPF do cartista: ");
+                    System.out.print("CPF do Artista: ");
                     String cpfArtistaProcurado = input.nextLine();
                     try{
-                        central.excluirContratante(cpfArtistaProcurado);
+                        central.getArtistaService().excluirContratante(cpfArtistaProcurado);
                         persistencia.salvarCentral(central, ARQUIVO_CENTRAL);
                         System.out.println("Cliente removido!");
 
@@ -190,7 +202,7 @@ public class Main {
                     String senhaCliente= input.nextLine();
                     try{
                         Usuario cliente =new Usuario(nomeCliente,emailCliente,telefoneCliente,cpfCliente,senhaCliente);
-                        central.cadastrarCliente(cliente);
+                        central.getClienteService().cadastrarCliente(cliente);
                         persistencia.salvarCentral(central,ARQUIVO_CENTRAL);
 
                     }catch(Exception e){
@@ -206,7 +218,7 @@ public class Main {
                     senhaCliente = input.nextLine();
 
                     try{
-                        Usuario cliente=login.autenticarUsuario(emailCliente,senhaCliente,central.getListaCliente());
+                        Usuario cliente=(Usuario)login.autenticar(emailCliente,senhaCliente);
                         System.out.println("Bem-vindo " + cliente.getNome());
                     }catch (Exception e) {
                         e.printStackTrace();}
@@ -216,14 +228,14 @@ public class Main {
                     try{
                         System.out.print("Confirme seu cpf para alterar senha: ");
                         String cpfClienteprocurado = input.nextLine();
-                        central.solicitarMudancaSenha(cpfClienteprocurado);
+                        central.getLoginService().solicitarMudancaSenha(cpfClienteprocurado);
 
                         System.out.print("Código recebido: ");
                         String codigo = input.nextLine();
                         System.out.print("Nova senha: ");
                         String novaSenha = input.nextLine();
 
-                        central.redefinirSenha(cpfClienteprocurado,codigo,novaSenha);
+                        central.getLoginService().redefinirSenha(cpfClienteprocurado,codigo,novaSenha);
                         persistencia.salvarCentral(central, ARQUIVO_CENTRAL);
                     }catch (Exception e) {
                         e.printStackTrace();
@@ -233,7 +245,7 @@ public class Main {
 
                 case "12"://listar cliente
 
-                    for(Usuario c : central.getListaCliente()){
+                    for(Usuario c : central.getClienteService().getListaCliente()){
                         System.out.println(c);
                     }
 
@@ -243,11 +255,310 @@ public class Main {
                     System.out.print("CPF do cliente: ");
                     String cpfClienteProcurado = input.nextLine();
                     try{
-                        central.excluirCliente(cpfClienteProcurado);
+                        central.getClienteService().excluirCliente(cpfClienteProcurado);
                         persistencia.salvarCentral(central, ARQUIVO_CENTRAL);
                         System.out.println("Cliente removido!");
 
                     }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+                case "14"://cadastrar proposta
+
+                    try {
+
+                        Contratante artista;
+
+                        System.out.print("CPF do artista responsável: ");
+                        String cpfArtistaa = input.nextLine();
+
+                        try {
+
+                            artista = central.getArtistaService()
+                                    .buscarContratante(cpfArtistaa);
+
+                            System.out.println(
+                                    "Artista já cadastrado. Dados reutilizados."
+                            );
+
+                        } catch (ContratanteInvalidoException e) {
+
+                            System.out.println(
+                                    "Primeiro aluguel deste artista."
+                            );
+
+                            System.out.print("Nome: ");
+                            String nome = input.nextLine();
+
+                            System.out.print("Email: ");
+                            String emaill = input.nextLine();
+
+                            System.out.print("Telefone: ");
+                            String telefone = input.nextLine();
+
+                            System.out.print("Senha: ");
+                            String senhaa = input.nextLine();
+
+                            artista = new Contratante(
+                                    nome,
+                                    emaill,
+                                    telefone,
+                                    cpfArtistaa,
+                                    senhaa
+                            );
+
+                            central.getArtistaService()
+                                    .cadastrarContratante(artista);
+                        }
+
+                        System.out.print("Nome da peça: ");
+                        String nomePeca = input.nextLine();
+
+                        System.out.print("Valor do aluguel: ");
+                        double valorAluguel =
+                                Double.parseDouble(input.nextLine());
+
+                        System.out.print("Valor do ingresso: ");
+                        double valorIngresso =
+                                Double.parseDouble(input.nextLine());
+
+                        DateTimeFormatter formatoData =
+                                DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                        System.out.print(
+                                "Data início (dd/MM/yyyy): "
+                        );
+
+                        LocalDate dataInicio =
+                                LocalDate.parse(
+                                        input.nextLine(),
+                                        formatoData
+                                );
+
+                        System.out.print(
+                                "Data fim (dd/MM/yyyy): "
+                        );
+
+                        LocalDate dataFim =
+                                LocalDate.parse(
+                                        input.nextLine(),
+                                        formatoData
+                                );
+
+                        System.out.print(
+                                "Horário início (HH:mm): "
+                        );
+
+                        LocalTime horarioInicio =
+                                LocalTime.parse(input.nextLine());
+
+                        System.out.print(
+                                "Horário fim (HH:mm): "
+                        );
+
+                        LocalTime horarioFim =
+                                LocalTime.parse(input.nextLine());
+
+                        PropostaAluguel proposta =
+                                new PropostaAluguel(
+                                        artista,
+                                        nomePeca,
+                                        valorAluguel,
+                                        dataInicio,
+                                        dataFim,
+                                        horarioInicio,
+                                        horarioFim,
+                                        valorIngresso
+                                );
+
+                        central.getPropostaService()
+                                .cadastrarProposta(proposta);
+
+                        persistencia.salvarCentral(
+                                central,
+                                ARQUIVO_CENTRAL
+                        );
+
+                        System.out.println(
+                                "Proposta cadastrada com sucesso!"
+                        );
+
+                        System.out.println(
+                                "ID da proposta: "
+                                        + proposta.getId()
+                        );
+
+                    } catch (Exception e) {
+
+                        System.out.println(
+                                "Erro ao cadastrar proposta: "
+                                        + e.getMessage()
+                        );
+                    }
+
+                    break;
+                case "15"://listar proposta
+
+                    for(PropostaAluguel p :
+                            central.getPropostaService().getListaPropostas()) {
+
+                        System.out.println(p);
+                    }
+
+                    break;
+                case "16":
+
+                    try {
+
+                        System.out.print(
+                                "ID da proposta: "
+                        );
+
+                        long id =
+                                Long.parseLong(
+                                        input.nextLine()
+                                );
+
+                        PropostaAluguel proposta =
+                                central.getPropostaService().buscarProposta(id);
+
+                        System.out.println(
+                                "Peça: "
+                                        + proposta.getNomePeca()
+                        );
+
+                        System.out.println(
+                                "Artista: "
+                                        + proposta.getContratante().getNome()
+                        );
+
+                        System.out.println(
+                                "Período: "
+                                        + proposta.getDataInicio()
+                                        + " até "
+                                        + proposta.getDataFim()
+                        );
+
+                        System.out.println(
+                                "Horário: "
+                                        + proposta.getHorarioInicio()
+                                        + " às "
+                                        + proposta.getHorarioFim()
+                        );
+
+                        System.out.println(
+                                "Valor aluguel: "
+                                        + proposta.getValorAluguel()
+                        );
+
+                        System.out.println(
+                                "Valor ingresso: "
+                                        + proposta.getValorIngresso()
+                        );
+
+                        System.out.println(
+                                "Status atual: "
+                                        + proposta.getStatusProposta()
+                        );
+
+                        System.out.println();
+                        System.out.println(
+                                "1 - Aprovar proposta"
+                        );
+                        System.out.println(
+                                "2 - Encerrar contrato"
+                        );
+                        System.out.println(
+                                "3 - Estender contrato"
+                        );
+
+                        String escolha =
+                                input.nextLine();
+
+                        switch (escolha) {
+
+                            case "1":
+
+                                proposta.contratar();
+
+                                System.out.println(
+                                        "Proposta aprovada."
+                                );
+
+                                break;
+
+                            case "2":
+
+                                proposta.encerrarContrato();
+
+                                System.out.println(
+                                        "Contrato encerrado."
+                                );
+
+                                break;
+
+                            case "3":
+
+                                DateTimeFormatter formato =
+                                        DateTimeFormatter
+                                                .ofPattern(
+                                                        "dd/MM/yyyy"
+                                                );
+
+                                System.out.print(
+                                        "Nova data final: "
+                                );
+
+                                LocalDate novaData =
+                                        LocalDate.parse(
+                                                input.nextLine(),
+                                                formato
+                                        );
+
+                                proposta.estenderContrato(
+                                        novaData
+                                );
+
+                                System.out.println(
+                                        "Contrato alterado."
+                                );
+
+                                break;
+                        }
+
+                        persistencia.salvarCentral(
+                                central,
+                                ARQUIVO_CENTRAL
+                        );
+
+                    } catch(Exception e) {
+
+                        System.out.println(
+                                e.getMessage()
+                        );
+                    }
+
+                    break;
+                case "17":
+
+                    try {
+
+                        System.out.print("ID da proposta: ");
+                        long id = Long.parseLong(input.nextLine());
+
+                        boolean enviado =
+                                central.getPropostaService()
+                                        .enviarPropostaPorEmail(id);
+
+                        if(enviado){
+                            System.out.println("Email enviado com sucesso!");
+                        }else{
+                            System.out.println("Falha ao enviar email.");
+                        }
+
+                    } catch(Exception e) {
                         e.printStackTrace();
                     }
 

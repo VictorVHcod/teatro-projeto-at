@@ -4,6 +4,8 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 
+import java.io.File;
+
 public class EmailService {
     public static boolean enviarEmail(String destinatario, String assunto, String menssagem,String arquivo, String nomeAnexo) {
 
@@ -16,7 +18,11 @@ public class EmailService {
             anexo.setDescription(EmailAttachment.ATTACHMENT);
             anexo.setName(nomeAnexo);
 
+            System.out.println("Arquivo recebido: " + arquivo);
             //email.setDebug(true);
+            File f = new File(arquivo);
+            System.out.println("Existe? " + f.exists());
+            System.out.println("Caminho absoluto: " + f.getAbsolutePath());
             email.setHostName("smtp.gmail.com");
             email.setAuthentication("testandoPoo@gmail.com", "ozlo ijvx xotz htrh");
             email.setSSL(true);
@@ -24,7 +30,7 @@ public class EmailService {
             email.setFrom("testandoPoo@gmail.com");
             email.setSubject(assunto);
             email.setMsg(menssagem);
-            //email.attach(anexo);
+            email.attach(anexo);
             email.send();
             System.out.println("Email enviado.....");
             return true;
