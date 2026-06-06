@@ -7,6 +7,9 @@ public class Assento {
     private StatusAssento status;
     private Setor setor;
 
+    public Assento(String numeroAssento) {
+    }
+
     public String getCodigo() {
         return codigo;
     }

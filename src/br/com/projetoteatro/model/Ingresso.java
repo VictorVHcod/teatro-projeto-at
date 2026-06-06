@@ -72,7 +72,7 @@ public class Ingresso {
     public String toString() {
         return "Ingresso{" +
                 "codigo='" + codigo + '\'' +
-                ", cliente=" + cliente.getNome() +
+                //", cliente=" + cliente.getNome() +
                 ", sessao=" + sessao.getData() +
                 ", valor=" + valor +
                 '}';

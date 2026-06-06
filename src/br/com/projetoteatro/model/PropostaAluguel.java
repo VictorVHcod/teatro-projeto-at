@@ -2,6 +2,7 @@ package br.com.projetoteatro.model;
 
 import br.com.projetoteatro.enums.StatusProposta;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

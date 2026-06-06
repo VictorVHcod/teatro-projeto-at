@@ -47,4 +47,24 @@ public class AdministradorRepository {
         }
         return false;
     }
+
+    public boolean buscarEmail(String usuario) throws SQLException {
+        ConexaoBanco banco = new ConexaoBanco();
+        Connection conexao = banco.getConnection();
+
+        String sql = """
+                SELECT * 
+                FROM administrador
+                WHERE email = ?""";
+
+        PreparedStatement stmt = conexao.prepareStatement(sql);
+
+        stmt.setString(1,usuario);
+        ResultSet resultado = stmt.executeQuery();
+
+        if (resultado.next()) {
+            return true;
+        }
+        return false;
+    }
 }

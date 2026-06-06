@@ -3,6 +3,9 @@ package br.com.projetoteatro.view;
 import br.com.projetoteatro.repository.AdministradorRepository;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,7 +56,20 @@ public class LoginView extends JFrame {
         lembrarSenha.setBounds(80,170,90,20);
         add(lembrarSenha);
 
-        System.out.println(new File(CAMINHO).getAbsolutePath());
+        JLabel lblEsqueciSenha = new JLabel("<html><u>Esqueci a senha</u></html>");
+        lblEsqueciSenha.setBounds(190,170 ,120, 20);
+        lblEsqueciSenha.setForeground(Color.BLUE);
+        lblEsqueciSenha.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        add(lblEsqueciSenha);
+
+        lblEsqueciSenha.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new RecuperarSenhaView().setVisible(true);
+                dispose();
+            }
+        });
 
         try {
             File file = new File(CAMINHO);

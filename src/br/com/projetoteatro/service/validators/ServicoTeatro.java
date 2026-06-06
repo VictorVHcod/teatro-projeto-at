@@ -2,7 +2,6 @@ package br.com.projetoteatro.service.validators;
 
 import br.com.projetoteatro.enums.StatusProposta;
 import br.com.projetoteatro.exceptions.*;
-import br.com.projetoteatro.model.Administrador;
 import br.com.projetoteatro.model.Contratante;
 import br.com.projetoteatro.model.PropostaAluguel;
 import br.com.projetoteatro.model.RegraAluguel;
@@ -86,7 +85,7 @@ public class ServicoTeatro {
     }
     public void contratarProposta(long id) throws PropostaInvalidaException{
         PropostaAluguel proposta=buscarProposta(id);
-        proposta.setStatusProposta(StatusProposta.CONTRATADO);
+        //proposta.setStatusProposta(StatusProposta.CONTRATADO);
     }
 
     //cadastrar contratante
