@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public abstract class Pessoa {
+    protected Pessoa pessoa;
     private String nome;
     private String email;
     private String telefone;

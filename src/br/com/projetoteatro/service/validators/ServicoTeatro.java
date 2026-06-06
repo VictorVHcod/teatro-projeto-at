@@ -85,4 +85,7 @@ public class ServicoTeatro {
     public RegrasService getRegrasService() {
         return regrasService;
     }
+
+    public AdministradorService getAdministradorService() {
+    }
 }

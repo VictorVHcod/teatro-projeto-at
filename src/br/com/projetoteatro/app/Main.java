@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
+/*
 public class Main {
 
     private static ServicoTeatro central;
@@ -569,4 +569,4 @@ public class Main {
         }while(!"s".equalsIgnoreCase(opcao));
 
     }
-}
+}*/
