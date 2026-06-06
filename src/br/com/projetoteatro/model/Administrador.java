@@ -2,7 +2,9 @@ package br.com.projetoteatro.model;
 
 public class Administrador extends Pessoa {
     private String senha;
+    public Administrador() {
 
+    }
     public Administrador(String email, String senha) {
         super(email);
         this.senha = senha;
@@ -24,8 +26,5 @@ public class Administrador extends Pessoa {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    //talvez seja mais interessante deixar em uma classe separada ---
-    public boolean autenticacao(String email,String senha) {
-        return this.getEmail().equals(email) && this.senha.equals(senha);
-    }
+
 }

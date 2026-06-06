@@ -1,7 +1,5 @@
 package br.com.projetoteatro.view;
 
-import br.com.projetoteatro.repository.AdministradorRepository;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -13,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LoginView extends JFrame {
-    AdministradorRepository adm = new AdministradorRepository();
+    //AdministradorRepository adm = new AdministradorRepository();
     private static final String CAMINHO = "usuario.txt";
     private JTextField txtUser;
     private JTextField txtSenha;
@@ -104,14 +102,12 @@ public class LoginView extends JFrame {
                     }
                 }
 
-                if(adm.buscaLogin(usuario,senha)) {
-                    new DashBoardView().setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this,"Login inválido");
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+//                if(adm.buscaLogin(usuario,senha)) {
+ //                   new DashBoardView().setVisible(true);
+ //                   dispose();
+ //               } else {
+ //                   JOptionPane.showMessageDialog(this,"Login inválido");
+//                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

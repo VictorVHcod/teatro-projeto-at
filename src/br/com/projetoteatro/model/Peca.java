@@ -8,7 +8,7 @@ import java.util.List;
 public class Peca {
     private long id;
     private String nome;
-    private Artista artistaResponsavel;
+    private Contratante artistaResponsavel;
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private double precoIngresso;

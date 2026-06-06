@@ -30,14 +30,11 @@ public class ValidadorCPF {
         int segundaSoma = 0;
 
         for(int i = 0; i < 10; i++) {
-            soma += digitosCPF[i] * contador;
-            contador--;
+            segundaSoma += digitosCPF[i] * segundoContador;
+            segundoContador--;
         }
+        int segundoDigito = (segundaSoma % 11 < 2) ? 0 : 11 - (segundaSoma % 11);
 
-        if (!(soma % 11 < 2 && digitosCPF[10] == 0 ||
-                soma % 11 >= 2 && digitosCPF[10] == 11 - (soma % 11))) {
-            return false;
-        }
-        return true;
+        return digitosCPF[10] == segundoDigito;
     }
 }

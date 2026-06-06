@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Ingresso {
 
     private long id;
-    private Cliente cliente;
+    private Usuario cliente;
     private Sessao sessao;
     private Assento assento;
     private Setor setor;
@@ -14,7 +14,7 @@ public class Ingresso {
     private LocalDateTime dataCompra;
     private String codigo;
 
-    public Ingresso(Cliente cliente,
+    public Ingresso(Usuario cliente,
                     Sessao sessao,
                     Assento assento,
                     Setor setor,
@@ -40,7 +40,7 @@ public class Ingresso {
         return id;
     }
 
-    public Cliente getCliente() {
+    public Usuario getCliente() {
         return cliente;
     }
 

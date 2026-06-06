@@ -1,4 +1,4 @@
-package br.com.projetoteatro.service.validators;
+package br.com.projetoteatro.service;
 
 import br.com.projetoteatro.enums.StatusProposta;
 import br.com.projetoteatro.exceptions.*;
@@ -7,51 +7,37 @@ import br.com.projetoteatro.model.PropostaAluguel;
 import br.com.projetoteatro.model.RegraAluguel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServicoTeatro {
-    private ArrayList<RegraAluguel> listaRegras;
-    private ArrayList<PropostaAluguel> listaPropostas;
-    private ArrayList<Contratante> listaContratante;
-    private ValidadorHorarios validador;
-    //private Administrador[] adm;
-
+    private ClienteService clienteService;
+    private ArtistaService artistaService;
+    private AdministradorService administradorService;
+    private LoginService loginService;
+    private PropostaService propostaService;
+    private RegrasService regrasService;
+    //private ArrayList<Peca> listaPecas;
+    // private ArrayList<Sessao> listaSessoes;
+    //private ArrayList<Ingresso> listaIngressos;
 
     public ServicoTeatro(){
 
-        listaRegras=new ArrayList<>();
-        listaPropostas=new ArrayList<>();
-        listaContratante=new ArrayList<>();
-        validador=new ValidadorHorarios();
-        //adm=new Administrador[1];
+        clienteService = new ClienteService();
+        artistaService = new ArtistaService();
+        administradorService = new AdministradorService();
+        regrasService=new RegrasService();
+        propostaService= new PropostaService();
 
-    }
-    //listar Regras obs: acho que tem que sobrescrever tostring
-    public ArrayList<RegraAluguel> getListaRegras() {
-        return listaRegras;
+        loginService = new LoginService(administradorService,clienteService,artistaService);
     }
 
-    //cadastrando regras
-
-    public void cadastrarRegra(RegraAluguel regra){
-
-        listaRegras.add(regra);
+    public ClienteService getClienteService() {
+        return clienteService;
     }
 
-    //buscar regra por id
-    public RegraAluguel buscarRegra(long id) throws RegraInvalidaException {
-        for(RegraAluguel x:listaRegras){
-            if(x.getId()==id){
-                return x;
-            }
-        }
-        throw new RegraInvalidaException("Não existe uma regra cadastrada com o id: "+id);
-
-    }
-    //editar a regra de aluguel
-
-    public void editarRegra(long id,float novoValor) throws RegraInvalidaException {
-        RegraAluguel regra=buscarRegra(id);
-        regra.setValorHora(novoValor);
+    public ArtistaService getArtistaService() {
+        return artistaService;
     }
 
     //excluir
@@ -88,62 +74,15 @@ public class ServicoTeatro {
         //proposta.setStatusProposta(StatusProposta.CONTRATADO);
     }
 
-    //cadastrar contratante
-    public void cadastrarContratante(Contratante c) throws CPFInvalidoException{
-        if(!ValidadorCPF.isValido(c.getCpf())){
-            throw new CPFInvalidoException("CPF inválido...");
-        }
-        listaContratante.add(c);
+    public LoginService getLoginService() {
+        return loginService;
     }
 
-    //buscar contratante por cpf
-    public Contratante buscarContratante(String cpf) throws CPFInvalidoException, ContratanteInvalidoException {
-       if(!ValidadorCPF.isValido(cpf)){
-           throw new CPFInvalidoException("CPF inválido...");
-       }
-        for(Contratante x: listaContratante){
-            if(x.getCpf().equals(cpf)){
-                return x;
-
-            }
-        }
-        throw new ContratanteInvalidoException("Contratante não encontrado....");
-
+    public PropostaService getPropostaService() {
+        return propostaService;
     }
 
-    //lista contratante
-    public ArrayList<Contratante> getListaContratante() {
-        return listaContratante;
+    public RegrasService getRegrasService() {
+        return regrasService;
     }
-    //filtragem
-
-    public ArrayList<PropostaAluguel> filtrarPropostaPorStatus(StatusProposta s)  {
-        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
-        for(PropostaAluguel x:listaPropostas){
-            if(x.getStatusProposta()==s){
-                listagemResultado.add(x);
-            }
-        }
-        return listagemResultado;
-    }
-    public ArrayList<PropostaAluguel> filtrarPropostaPorContratante(String n){
-        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
-        for(PropostaAluguel x:listaPropostas){
-            if(x.getContratante().getNome().toLowerCase().contains(n)){
-                listagemResultado.add(x);
-            }
-        }
-        return listagemResultado;
-    }
-    public ArrayList<PropostaAluguel> filtrarPropostaPorNomePeca(String n){
-        ArrayList<PropostaAluguel> listagemResultado=new ArrayList<PropostaAluguel>();
-        for(PropostaAluguel x:listaPropostas){
-            if(x.getNomePeca().toLowerCase().contains(n)){
-                listagemResultado.add(x);
-            }
-        }
-        return listagemResultado;
-    }
-
-
 }
