@@ -14,14 +14,14 @@ public class Ingresso {
     private LocalDateTime dataCompra;
     private String codigo;
 
-    public Ingresso(Usuario cliente,
+    public Ingresso(Cliente cliente,
                     Sessao sessao,
                     Assento assento,
                     Setor setor,
                     double valor) {
 
         this.id = System.currentTimeMillis();
-        this.cliente = cliente;
+        //this.cliente = cliente;
         this.sessao = sessao;
         this.assento = assento;
         this.setor = setor;

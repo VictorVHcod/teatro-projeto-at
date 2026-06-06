@@ -9,7 +9,7 @@ import br.com.projetoteatro.model.RegraAluguel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/*
 public class ServicoTeatro {
     private ClienteService clienteService;
     private ArtistaService artistaService;
@@ -89,3 +89,4 @@ public class ServicoTeatro {
     public AdministradorService getAdministradorService() {
     }
 }
+*/

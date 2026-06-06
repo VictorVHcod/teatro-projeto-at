@@ -1,5 +1,5 @@
 package br.com.projetoteatro.repository;
-
+/*
 import br.com.projetoteatro.service.ServicoTeatro;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -42,3 +42,4 @@ public class Persistencia {
     }
 
 }
+*/

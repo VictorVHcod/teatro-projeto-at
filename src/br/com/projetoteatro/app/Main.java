@@ -6,9 +6,9 @@ import br.com.projetoteatro.exceptions.SenhaInvalidaException;
 import br.com.projetoteatro.model.*;
 import br.com.projetoteatro.service.EmailService;
 import br.com.projetoteatro.service.LoginService;
-import br.com.projetoteatro.service.ServicoTeatro;
-import br.com.projetoteatro.service.ServicoTeatro;
-import br.com.projetoteatro.repository.Persistencia;
+//import br.com.projetoteatro.service.ServicoTeatro;
+//import br.com.projetoteatro.service.ServicoTeatro;
+//import br.com.projetoteatro.repository.Persistencia;
 
 
 import java.time.LocalDate;

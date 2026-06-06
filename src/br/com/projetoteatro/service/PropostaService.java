@@ -7,7 +7,7 @@ import br.com.projetoteatro.model.PropostaAluguel;
 import br.com.projetoteatro.service.validators.ValidadorHorarios;
 
 import java.util.ArrayList;
-
+/*
 public class PropostaService {
 
     private ArrayList<PropostaAluguel> listaPropostas;
@@ -97,4 +97,7 @@ public class PropostaService {
         }
         return listagemResultado;
     }
+
+
 }
+ */
